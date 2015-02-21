@@ -27,43 +27,44 @@ for (var i=0; i < provinces.length; i++) {
 	//Returns JSON object of best city/province/industry fit
 	var city = find_best_industry(industry, provinces[i]);
 	cities.push(city);
-
 }
 
 
 sorted_provinces = rankProv(cities);
 
+console.log(sorted_provinces);
+
 //Multiply by 5 to alter ranking weight
-for (var prov in sort_provinces) {
-	prov.rank = prov.rank * 5;
+for (var k = 0; k < sorted_provinces.length; k++) {
+	sorted_provinces[k].rank = sorted_provinces[k].rank * 4;
 }
 
 
 //sorted_provinces[0].province is the best industry fit!
-console.log(sorted_provinces[0].city);
+console.log(sorted_provinces[0].rank);
 
 function find_best_industry(industry, province) {
 
 		var industry_results = search("Province", province, search("Industry", industry, data));
 		var total_expend = search("Province", province, search("Industry", "Total expenditure", data));
-		var result;
+		var result = {};
 
-		if (len(industry_results) > 1) {
+		if (industry_results.length > 1) {
 
-			if ((industry_results[0].value / total_expend[0].value) > (industry_results[1].value / total_expend[1].value)) {
-				result.province = province;
-				result.city = industry_results[0].city;
-				result.value = industry_results[0].value / total_expend[0].value;
+			if ((parseFloat(industry_results[0].Value) / parseFloat(total_expend[0].Value)) > (parseFloat(industry_results[1].Value) / parseFloat(total_expend[1].Value))) {
+				result.province = industry_results[0].Province;
+				result.city = industry_results[0].City;
+				result.value = parseFloat(industry_results[0].Value) / parseFloat(total_expend[0].Value);
 			} else {
-				result.province = province;
-				result.city = industry_results[1].city;
-				result.value = industry_results[1].value / total_expend[1].value;
+				result.province = industry_results[1].Province;
+				result.city = industry_results[1].City;
+				result.value = parseFloat(industry_results[1].Value) / parseFloat(total_expend[1].Value);
 			}
 
 		} else {
-			result.province = province;
-			result.city = industry_results[0].city;
-			result.value = industry_results[0].value / total_expend[0].value;
+			result.province = industry_results[0].Province;
+			result.city = industry_results[0].City;
+			result.value = parseFloat(industry_results[0].Value) / parseFloat(total_expend[0].Value);
 		}
 
 		return result;
@@ -72,13 +73,15 @@ function find_best_industry(industry, province) {
 function rankProv(provs) {
 
 	var sort_prov = [];
-	var count = 0, j = 0;
+	var count = 0, j = 0, result;
+	var amt = provs.length;
+	var hold;
 
 	//Returns a sorted array based off the proportions given in val
-	for (var m=0; m < provs.length; m++) {
+	for (var m=0; m < amt; m++) {
 
-		j = count;
-		var result = j;
+		j = 0;
+		result = 0;
 
 		for (j; j < provs.length; j++) {
 
@@ -88,7 +91,8 @@ function rankProv(provs) {
 
 		}
 
-		var hold = provs.splice(result, 1);
+		hold = provs.splice(result, 1);
+		hold = hold[0];
 		hold.rank = 13 - count;
 		sort_prov.push(hold);
 
