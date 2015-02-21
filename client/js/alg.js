@@ -15,9 +15,9 @@
 //Output:
 // -Best location in Canada for the business
 
-var industry = (input industry);
+var industry = "Clothing";
 
-var provinces = ["Ontario", "British Columbia", "Newfoundland and Labrador", "Prince Edward Island", "Nova Scotia", "New Brunswick", "Quebec", "Manitoba", "Saskatchewan",\
+var provinces = ["Ontario", "British Columbia", "Newfoundland and Labrador", "Prince Edward Island", "Nova Scotia", "New Brunswick", "Quebec", "Manitoba", "Saskatchewan",
 				"Alberta", "Yukon", "Northwest Territories", "Nunavut"];
 
 var cities = [];
@@ -25,7 +25,7 @@ var cities = [];
 for (var i=0; i < provinces.length; i++) {
 
 	//Returns JSON object of best city/province/industry fit
-	var city = findBestCity(industry, provinces[i]);
+	var city = find_best_industry(industry, provinces[i]);
 	cities.push(city);
 
 }
@@ -40,16 +40,33 @@ for (var prov in sort_provinces) {
 
 
 //sorted_provinces[0].province is the best industry fit!
+console.log(sorted_provinces[0].city);
 
+function find_best_industry(industry, province) {
 
+		var industry_results = search("Province", province, search("Industry", industry, data));
+		var total_expend = search("Province", province, search("Industry", "Total expenditure", data));
+		var result;
 
+		if (len(industry_results) > 1) {
 
+			if ((industry_results[0].value / total_expend[0].value) > (industry_results[1].value / total_expend[1].value)) {
+				result.province = province;
+				result.city = industry_results[0].city;
+				result.value = industry_results[0].value / total_expend[0].value;
+			} else {
+				result.province = province;
+				result.city = industry_results[1].city;
+				result.value = industry_results[1].value / total_expend[1].value;
+			}
 
+		} else {
+			result.province = province;
+			result.city = industry_results[0].city;
+			result.value = industry_results[0].value / total_expend[0].value;
+		}
 
-function findBestCity(industry, province) {
-
-
-
+		return result;
 }
 
 function rankProv(provs) {
@@ -65,7 +82,7 @@ function rankProv(provs) {
 
 		for (j; j < provs.length; j++) {
 
-			if (provs[j].val > provs[result].val) {
+			if (provs[j].value > provs[result].value) {
 				result = j;
 			}
 
@@ -81,3 +98,20 @@ function rankProv(provs) {
 
 	return sort_prov;
 }
+
+//Returns array with the specified category and term to look for in that category
+function search(category, keyTerm, data) {
+
+        var temp = [];
+
+        for (var i = 0; i < data.length; i++) {
+
+            var search = keyTerm;
+
+            if (data[i][category] === search) {
+                temp.push(data[i]);
+            }
+
+        }
+        return temp
+    }
