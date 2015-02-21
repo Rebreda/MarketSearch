@@ -14,11 +14,15 @@
 
 //Output:
 // -Best location in Canada for the business
+// "Yukon", "Northwest Territories", "Nunavut"
 
-var industry = "Clothing";
+var industry = "Recreation";
+var age = "0 to 24 years (4,10)";
+var gender = "Males";
+var income = "Persons with income of $150,000 and over (5)";
 
 var provinces = ["Ontario", "British Columbia", "Newfoundland and Labrador", "Prince Edward Island", "Nova Scotia", "New Brunswick", "Quebec", "Manitoba", "Saskatchewan",
-				"Alberta", "Yukon", "Northwest Territories", "Nunavut"];
+				"Alberta"];
 
 var cities = [];
 
@@ -34,14 +38,33 @@ sorted_provinces = rankProv(cities);
 
 console.log(sorted_provinces);
 
-//Multiply by 5 to alter ranking weight
+//Multiply by 4 to alter ranking weight
 for (var k = 0; k < sorted_provinces.length; k++) {
 	sorted_provinces[k].rank = sorted_provinces[k].rank * 4;
 }
 
+var raw = [];
+
+for (var i=0; i < provinces.length; i++) {
+
+	//Returns JSON object of best city/province/industry fit
+	var res = find_best_income(age, gender, income, provinces[i]);
+	raw.push(res);
+}
+
+sorted_incomes = rankProv(raw);
+
+//Multiply by 3 to alter ranking weight
+for (var k = 0; k < sorted_incomes.length; k++) {
+	sorted_incomes[k].rank = sorted_incomes[k].rank * 3;
+}
 
 //sorted_provinces[0].province is the best industry fit!
+console.log(sorted_provinces[0].province);
 console.log(sorted_provinces[0].rank);
+
+console.log(sorted_incomes[0].province);
+console.log(sorted_incomes[0].rank);
 
 function find_best_industry(industry, province) {
 
@@ -70,6 +93,21 @@ function find_best_industry(industry, province) {
 		return result;
 }
 
+function find_best_income(age, gender, income, province) {
+
+	var province_results = search("Income", income, search("Gender", gender, search("Age", age, 
+						   search("Province", province, income_data))));
+	var total_results = search("Income", "Total persons with income (5)", search("Gender", "Both sexes", search("Age", "All age groups (4,10)", 
+						search("Province", province, income_data))));
+
+	var result = {};
+
+	result.province = province_results[0].Province;
+	result.value = province_results[0].Value / total_results[0].Value;
+
+	return result;
+}
+
 function rankProv(provs) {
 
 	var sort_prov = [];
@@ -93,7 +131,7 @@ function rankProv(provs) {
 
 		hold = provs.splice(result, 1);
 		hold = hold[0];
-		hold.rank = 13 - count;
+		hold.rank = 10 - count;
 		sort_prov.push(hold);
 
 		count++;
