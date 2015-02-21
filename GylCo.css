@@ -1,0 +1,145 @@
+/**Page Structure**/
+
+.front {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.front h3 {
+    margin-top: -10px;
+    text-align: center;
+}
+
+.front img {
+    width: 120px;
+    margin-top: 100px;
+}
+
+.mainLink {
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+.icon {
+    padding: 25px;
+    background-color: rgb(29, 202, 255);
+    color: white;
+    font-size: 250%;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    margin-bottom: 25px;
+    text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
+}
+
+.location {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    line-height: 20px;
+}
+
+.location h3 {
+    margin-top: -7px;
+}
+
+.location img {
+    width: 80px;
+    height: auto;
+}
+
+.well {
+    outline: none;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: #FFFFFF;
+}
+
+.formHold {
+    text-align: center;
+}
+
+.btn {
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    padding: 2px 10px;
+    height: 35px;
+    width: 70px;
+    background-color: rgb(192, 222, 237);
+}
+
+input {
+    border: 1px solid;
+    background: #FFFFFF;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    padding: 5px 10px;
+    min-width: 100%;
+}
+
+.table-data {
+    margin-top: 50px;
+}
+
+.people-data {
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.people-data th {
+    font-family: 'Roboto', sans-serif;
+}
+
+.bottomicons li {
+    display: inline;
+    list-style-type: none;
+}
+
+.bottomicons {
+    text-align: center;
+    margin-top: 60px;
+    padding-right: 50px;
+}
+
+.bottomicons img {
+    width: 40px;
+    height: auto;
+}
+
+.contact {
+    text-align: center;
+}
+
+.about img {
+    width: 120px;
+    height: auto;
+    text-align: center;
+}
+
+.about li {
+    list-style-type: none;
+    text-align: center;
+    padding-right: 50px;
+}
+
+.about p {
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.explain img {
+    width: 80px;
+}
+
+.explain li {
+    list-style-type: none;
+    text-align: center;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+}

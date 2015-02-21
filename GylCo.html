@@ -1,0 +1,94 @@
+<head>
+    <title>
+        Open Code
+    </title>
+    <script src="inject.js"></script>
+    <script src="/js/console.js"></script>
+</head>
+
+<body>
+    {{> top}}
+</body>
+
+<template name="home">
+
+    <div class="container">
+
+
+        <div class="formHold col-md-4 col-md-offset-4">
+            <div class="logo">
+                <span class="icon glyphicon glyphicon-search"></span>
+            </div>
+
+            <form action="/search" class="well form-search" style="font-family:'Roboto', sans-serif;">
+
+                <input name="location" type="text" class="span4 search-query" placeholder="City..." />
+                <br>
+                <br>
+                <input name="category" type="text" class="span4 search-query" placeholder="Business Category..." />
+                <br>
+                <br>
+                <input name="relatedField" type="text" class="span4 search-query" placeholder="Related Field..." />
+                <br>
+                <br>
+                <button class="btn">Search</button>
+
+            </form>
+
+
+            <div class="bottomicons">
+
+                <ul>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="top">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li class='right'>
+                    <h3 class="mainLink pull-right"><a class="mainLink" href="{{pathFor 'home'}}" > MarketSearch </a> </h3>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</template>
+
+<!-- Examples -->
+<template name="values">
+    <div class="container">
+        <h1> List of Values </h1>
+        <table class="table table-striped table-hover">
+            <tbody>
+                {{#each values}}
+                <tr>
+                    <td> <span class="text">{{text}} </span> </td>
+                    <td> <span class="createdAt">{{createdAt}} </span>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</template>
+
+<template name="input">
+    <div class="container">
+        <div class="input-group">
+            <form class="data form-inline" role="form">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon"> <span class="glyphicon glyphicon-search"> </span>
+                        </div>
+                        <input type="text" class="form-control" id="search" name="text" placeholder="Add Data" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>

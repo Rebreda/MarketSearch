@@ -1,0 +1,10 @@
+{
+  "packages": {
+    "my:fork": {
+      "git": "https://github.com/MrRio/jsPDF.git"
+    },
+    "local:version": {
+      "path": "/Documents/jsPDF"
+    }
+  }
+}
