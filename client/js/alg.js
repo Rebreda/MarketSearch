@@ -21,6 +21,7 @@ var age = "0 to 24 years (4,10)";
 var gender = "Males";
 var income = "Persons with income of $150,000 and over (5)";
 var profession = " Mathematics computer and physical sciences";
+var market_size_pref = "Large";
 
 var provinces = ["Ontario", "British Columbia", "Newfoundland and Labrador", "Prince Edward Island", "Nova Scotia", "New Brunswick", "Quebec", "Manitoba", "Saskatchewan",
 				"Alberta"];
@@ -84,6 +85,10 @@ console.log(sorted_incomes[0].rank);
 console.log(sorted_profs[0].province);
 console.log(sorted_profs[0].rank);
 
+result_array = market_order_by_size();
+
+console.log(result_array[0].rank);
+
 function find_best_industry(industry, province) {
 
 		var industry_results = search("Province", province, search("Industry", industry, data));
@@ -137,6 +142,25 @@ function find_best_profession(profession, province) {
 	result.value = parseFloat(province_results[0].Value) / parseFloat(total_results[0].Value);
 
 	return result;
+}
+
+function market_order_by_size() {
+
+	myArr = [];
+
+	for (var i=0; i < provinces.length; i++) {
+
+		var province = search("Income", "Total persons with income (5)", search("Gender", "Both sexes", search("Age", "All age groups (4,10)", 
+					   search("Province", provinces[i], income_data))));
+
+		province[0].value = parseFloat(province[0].Value);
+
+		myArr.push(province[0]);
+	}
+
+	myArr = rankProv(myArr);
+
+	return myArr;
 }
 
 function rankProv(provs) {
