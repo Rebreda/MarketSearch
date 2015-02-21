@@ -1,93 +1,88 @@
-//Main algorithm for determining the best location, based off the of specified inputs
+console.log(main());
 
-//Identify lucrative/under-served business markets for Canadian entrepreneurs
+function main() {
 
-//Input:
-//	-Industry
-//(Target Market)
-//	-Age
-//	-Income Range
-//	-Gender
-//	-Profession
-//	-Children (If time)
-//	-Market Size (If time)
+	//Main algorithm for determining the best location, based off the of specified inputs
 
-//Output:
-// -Best location in Canada for the business
-// "Yukon", "Northwest Territories", "Nunavut"
+	//Identify lucrative/under-served business markets for Canadian entrepreneurs
 
-var industry = "Recreation";
-var age = "0 to 24 years (4,10)";
-var gender = "Males";
-var income = "Persons with income of $150,000 and over (5)";
-var profession = " Mathematics computer and physical sciences";
-var market_size_pref = "Large";
+	//Input:
+	//	-Industry
+	//(Target Market)
+	//	-Age
+	//	-Income Range
+	//	-Gender
+	//	-Profession
 
-var provinces = ["Ontario", "British Columbia", "Newfoundland and Labrador", "Prince Edward Island", "Nova Scotia", "New Brunswick", "Quebec", "Manitoba", "Saskatchewan",
-				"Alberta"];
+	//Output:
+	// -Best location in Canada for the business
 
-var cities = [];
+	var industry = "Recreation";
+	var age = "0 to 24 years (4,10)";
+	var gender = "Males";
+	var income = "Persons with income of $150,000 and over (5)";
+	var profession = " Mathematics computer and physical sciences";
 
-for (var i=0; i < provinces.length; i++) {
+	var provinces = ["Ontario", "British Columbia", "Newfoundland and Labrador", "Prince Edward Island", "Nova Scotia", "New Brunswick", "Quebec", "Manitoba", "Saskatchewan",
+					"Alberta"];
 
-	//Returns JSON object of best city/province/industry fit
-	var city = find_best_industry(industry, provinces[i]);
-	cities.push(city);
+	var cities = [];
+	var finale = {};
+
+	for (var i=0; i < provinces.length; i++) {
+
+		//Returns JSON object of best city/province/industry fit
+		var city = find_best_industry(industry, provinces[i]);
+		cities.push(city);
+	}
+
+
+	sorted_provinces = rankProv(cities);
+
+	//Multiply by 4 to alter ranking weight
+	for (var k = 0; k < sorted_provinces.length; k++) {
+		sorted_provinces[k].rank = sorted_provinces[k].rank * 4;
+	}
+
+	var raw = [];
+
+	for (var i=0; i < provinces.length; i++) {
+
+		//Returns JSON object of best city/province/industry fit
+		var res = find_best_income(age, gender, income, provinces[i]);
+		raw.push(res);
+	}
+
+	sorted_incomes = rankProv(raw);
+
+	//Multiply by 3 to alter ranking weight
+	for (var k = 0; k < sorted_incomes.length; k++) {
+		sorted_incomes[k].rank = sorted_incomes[k].rank * 3;
+	}
+
+	var raw_prof = [];
+
+	for (var i=0; i < provinces.length; i++) {
+
+		//Returns JSON object of best city/province/industry fit
+		var result = find_best_profession(profession, provinces[i]);
+		raw_prof.push(result);
+	}
+
+	sorted_profs = rankProv(raw_prof);
+
+	//Multiply by 2 to alter ranking weight
+	for (var k = 0; k < sorted_profs.length; k++) {
+		sorted_profs[k].rank = sorted_profs[k].rank * 2;
+	}
+
+	sorted_provinces = combine(sorted_provinces, sorted_incomes);
+	sorted_provinces = combine(sorted_provinces, sorted_profs);
+
+	finale = largest(sorted_provinces);
+
+	return finale;
 }
-
-
-sorted_provinces = rankProv(cities);
-
-//Multiply by 4 to alter ranking weight
-for (var k = 0; k < sorted_provinces.length; k++) {
-	sorted_provinces[k].rank = sorted_provinces[k].rank * 4;
-}
-
-var raw = [];
-
-for (var i=0; i < provinces.length; i++) {
-
-	//Returns JSON object of best city/province/industry fit
-	var res = find_best_income(age, gender, income, provinces[i]);
-	raw.push(res);
-}
-
-sorted_incomes = rankProv(raw);
-
-//Multiply by 3 to alter ranking weight
-for (var k = 0; k < sorted_incomes.length; k++) {
-	sorted_incomes[k].rank = sorted_incomes[k].rank * 3;
-}
-
-var raw_prof = [];
-
-for (var i=0; i < provinces.length; i++) {
-
-	//Returns JSON object of best city/province/industry fit
-	var result = find_best_profession(profession, provinces[i]);
-	raw_prof.push(result);
-}
-
-sorted_profs = rankProv(raw_prof);
-
-//Multiply by 2 to alter ranking weight
-for (var k = 0; k < sorted_profs.length; k++) {
-	sorted_profs[k].rank = sorted_profs[k].rank * 2;
-}
-
-//sorted_provinces[0].province is the best industry fit!
-console.log(sorted_provinces[0].province);
-console.log(sorted_provinces[0].rank);
-
-console.log(sorted_incomes[0].province);
-console.log(sorted_incomes[0].rank);
-
-console.log(sorted_profs[0].province);
-console.log(sorted_profs[0].rank);
-
-result_array = market_order_by_size();
-
-console.log(result_array[0].rank);
 
 function find_best_industry(industry, province) {
 
@@ -144,24 +139,24 @@ function find_best_profession(profession, province) {
 	return result;
 }
 
-function market_order_by_size() {
+// function market_order_by_size(provinces) {
 
-	myArr = [];
+// 	myArr = [];
 
-	for (var i=0; i < provinces.length; i++) {
+// 	for (var i=0; i < provinces.length; i++) {
 
-		var province = search("Income", "Total persons with income (5)", search("Gender", "Both sexes", search("Age", "All age groups (4,10)", 
-					   search("Province", provinces[i], income_data))));
+// 		var province = search("Income", "Total persons with income (5)", search("Gender", "Both sexes", search("Age", "All age groups (4,10)", 
+// 					   search("Province", provinces[i], income_data))));
 
-		province[0].value = parseFloat(province[0].Value);
+// 		province[0].value = parseFloat(province[0].Value);
 
-		myArr.push(province[0]);
-	}
+// 		myArr.push(province[0]);
+// 	}
 
-	myArr = rankProv(myArr);
+// 	myArr = rankProv(myArr);
 
-	return myArr;
-}
+// 	return myArr;
+// }
 
 function rankProv(provs) {
 
@@ -194,6 +189,42 @@ function rankProv(provs) {
 	}
 
 	return sort_prov;
+}
+
+function combine(tally, increment) {
+
+	for (var i=0; i<increment.length; i++) {
+
+		for (var j=0; j<tally.length; j++) {
+
+			if (tally[j].province == increment[i].province) {
+				tally[j].rank += increment[i].rank;
+			}
+
+		}
+
+	}
+
+	return tally;
+}
+
+function largest(prov_array) {
+
+	var hold = prov_array[0];
+	var result = {};
+
+	for (var i=0; i<10; i++) {
+
+		if (prov_array[i].rank > hold.rank) {
+			hold = prov_array[i];
+		}
+
+	}
+
+	result.province = hold.province;
+	result.city = hold.city;
+
+	return result;
 }
 
 //Returns array with the specified category and term to look for in that category
