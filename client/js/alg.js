@@ -20,6 +20,7 @@ var industry = "Recreation";
 var age = "0 to 24 years (4,10)";
 var gender = "Males";
 var income = "Persons with income of $150,000 and over (5)";
+var profession = " Mathematics computer and physical sciences";
 
 var provinces = ["Ontario", "British Columbia", "Newfoundland and Labrador", "Prince Edward Island", "Nova Scotia", "New Brunswick", "Quebec", "Manitoba", "Saskatchewan",
 				"Alberta"];
@@ -35,8 +36,6 @@ for (var i=0; i < provinces.length; i++) {
 
 
 sorted_provinces = rankProv(cities);
-
-console.log(sorted_provinces);
 
 //Multiply by 4 to alter ranking weight
 for (var k = 0; k < sorted_provinces.length; k++) {
@@ -59,12 +58,31 @@ for (var k = 0; k < sorted_incomes.length; k++) {
 	sorted_incomes[k].rank = sorted_incomes[k].rank * 3;
 }
 
+var raw_prof = [];
+
+for (var i=0; i < provinces.length; i++) {
+
+	//Returns JSON object of best city/province/industry fit
+	var result = find_best_profession(profession, provinces[i]);
+	raw_prof.push(result);
+}
+
+sorted_profs = rankProv(raw_prof);
+
+//Multiply by 2 to alter ranking weight
+for (var k = 0; k < sorted_profs.length; k++) {
+	sorted_profs[k].rank = sorted_profs[k].rank * 2;
+}
+
 //sorted_provinces[0].province is the best industry fit!
 console.log(sorted_provinces[0].province);
 console.log(sorted_provinces[0].rank);
 
 console.log(sorted_incomes[0].province);
 console.log(sorted_incomes[0].rank);
+
+console.log(sorted_profs[0].province);
+console.log(sorted_profs[0].rank);
 
 function find_best_industry(industry, province) {
 
@@ -103,7 +121,20 @@ function find_best_income(age, gender, income, province) {
 	var result = {};
 
 	result.province = province_results[0].Province;
-	result.value = province_results[0].Value / total_results[0].Value;
+	result.value = parseFloat(province_results[0].Value) / parseFloat(total_results[0].Value);
+
+	return result;
+}
+
+function find_best_profession(profession, province) {
+
+	var province_results = search("Profession", profession, search("Province", province, prof_data));
+	var total_results =	search("Profession", "Total - Major field of study", search("Province", province, prof_data));
+
+	var result = {};
+
+	result.province = province_results[0].Province;
+	result.value = parseFloat(province_results[0].Value) / parseFloat(total_results[0].Value);
 
 	return result;
 }
